@@ -18,7 +18,7 @@ public class VentanaPrincipal extends JFrame {
 	    private final CitaDAO citaDAO;
 	    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-	    // Componentes de la UI
+	  
 	    private JTextField txtId;
 	    private JTextField txtCliente;
 	    private JTextField txtFechaHora;
@@ -47,7 +47,7 @@ public class VentanaPrincipal extends JFrame {
 	        setLocationRelativeTo(null);
 	        setLayout(new BorderLayout(10, 10));
 
-	        // --- PANEL DE FORMULARIO (Norte / Oeste) ---
+	  
 	        JPanel panelForm = new JPanel(new GridBagLayout());
 	        panelForm.setBorder(BorderFactory.createTitledBorder("Detalle de la Cita"));
 	        GridBagConstraints gbc = new GridBagConstraints();
@@ -57,7 +57,7 @@ public class VentanaPrincipal extends JFrame {
 	        txtId = new JTextField();
 	        txtId.setEditable(false);
 	        txtCliente = new JTextField(15);
-	        txtFechaHora = new JTextField(15); // Formato: AAAA-MM-DD HH:mm
+	        txtFechaHora = new JTextField(15);
 	        txtServicio = new JTextField(15);
 	        txtDuracion = new JTextField(15);
 	        cmbEstado = new JComboBox<>(new String[]{"pendiente", "confirmada", "cancelada"});

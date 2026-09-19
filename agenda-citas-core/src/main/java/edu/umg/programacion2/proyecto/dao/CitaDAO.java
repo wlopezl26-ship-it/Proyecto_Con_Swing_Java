@@ -10,6 +10,9 @@ import edu.umg.programacion2.proyecto.modelo.Cita;
 
 public class CitaDAO {
 
+	 private static final String URL = "jdbc:mysql://localhost:3306/prog2_db?useSSL=false&serverTimezone=UTC";
+	    private static final String USUARIO = "root";
+	    private static final String PASSWORD = "";
    
     public Cita crear(Cita cita) throws SQLException {
         String sql = "INSERT INTO cita (cliente, fecha_hora, servicio, duracion_minutos, estado) VALUES (?, ?, ?, ?, ?)";
@@ -34,7 +37,7 @@ public class CitaDAO {
         return cita;
     }
 
-    // 2. Listar todas las Citas (SELECT)
+  
     public List<Cita> listarTodos() throws SQLException {
         List<Cita> citas = new ArrayList<>();
         String sql = "SELECT id, cliente, fecha_hora, servicio, duracion_minutos, estado FROM cita ORDER BY fecha_hora ASC";
@@ -51,7 +54,7 @@ public class CitaDAO {
         return citas;
     }
 
-    // 3. Buscar por ID (SELECT WHERE id = ?)
+ 
     public Optional<Cita> buscarPorId(int id) throws SQLException {
         String sql = "SELECT id, cliente, fecha_hora, servicio, duracion_minutos, estado FROM cita WHERE id = ?";
 
@@ -69,7 +72,7 @@ public class CitaDAO {
         return Optional.empty();
     }
 
-    // 4. Actualizar Cita (UPDATE)
+  
     public boolean actualizar(Cita cita) throws SQLException {
         String sql = "UPDATE cita SET cliente = ?, fecha_hora = ?, servicio = ?, duracion_minutos = ?, estado = ? WHERE id = ?";
 
@@ -87,7 +90,7 @@ public class CitaDAO {
         }
     }
 
-    // 5. Eliminar Cita (DELETE)
+
     public boolean eliminar(int id) throws SQLException {
         String sql = "DELETE FROM cita WHERE id = ?";
 
@@ -99,7 +102,7 @@ public class CitaDAO {
         }
     }
 
-    // Método auxiliar para convertir una fila del ResultSet a un objeto Cita
+
     private Cita mapearCita(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String cliente = rs.getString("cliente");

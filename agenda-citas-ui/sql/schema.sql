@@ -1,6 +1,6 @@
-Create Database if not exists agenda_de_citas_db;
+Create Database if not exists USE agenda_citas_db;
 
-Use agenda_de_citas_db;
+Use agenda_citas_db;
 
 Drop table if exists cita;
 
