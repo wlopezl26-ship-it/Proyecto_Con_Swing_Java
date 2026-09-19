@@ -26,6 +26,7 @@ public class VentanaPrincipal extends JFrame {
 	    private JTextField txtDuracion;
 	    private JTextField txtPrecio;
 	    private JComboBox<String> cmbEstado;
+	    private JLabel lblResumenPrecios;
 
 	    private JButton btnGuardar;
 	    private JButton btnActualizar;
@@ -104,6 +105,11 @@ public class VentanaPrincipal extends JFrame {
 	        JScrollPane scrollTabla = new JScrollPane(tablaCitas);
 	        scrollTabla.setBorder(BorderFactory.createTitledBorder("Listado de Citas"));
 	        add(scrollTabla, BorderLayout.CENTER);
+	        
+	        lblResumenPrecios = new JLabel("Resumen de precios: Sin datos", SwingConstants.CENTER);
+	        lblResumenPrecios.setFont(new Font("SansSerif", Font.BOLD, 12));
+	        lblResumenPrecios.setBorder(BorderFactory.createEmptyBorder(8, 5, 8, 5));
+	        add(lblResumenPrecios, BorderLayout.SOUTH);
 
 	        // --- EVENTOS ---
 	        btnGuardar.addActionListener(e -> guardarCita());
@@ -143,6 +149,9 @@ public class VentanaPrincipal extends JFrame {
 	                        c.getEstado()
 	                });
 	            }
+	            
+	            actualizarResumenPrecios(citas);
+	            
 	        } catch (SQLException e) {
 	            JOptionPane.showMessageDialog(this, "Error al cargar citas: " + e.getMessage(), "Error BD", JOptionPane.ERROR_MESSAGE);
 	        }
@@ -247,4 +256,59 @@ public class VentanaPrincipal extends JFrame {
 	        cmbEstado.setSelectedIndex(0);
 	        tablaCitas.clearSelection();
 	    }
+	    
+	    private void actualizarResumenPrecios(List<Cita> citas) {
+	        if (citas == null || citas.isEmpty()) {
+	            lblResumenPrecios.setText("Resumen de precios: No hay registros registrados.");
+	            return;
+	        }
+
+	        Cita citaMayor = citas.get(0);
+	        Cita citaMenor = citas.get(0);
+
+	        for (Cita c : citas) {
+	            if (c.getPrecio() > citaMayor.getPrecio()) {
+	                citaMayor = c;
+	            }
+	            if (c.getPrecio() < citaMenor.getPrecio()) {
+	                citaMenor = c;
+	            }
+	        }
+
+	        String resumen = String.format(
+	            "<html><b>Precio más alto:</b> Q%.2f (%s) | <b>Precio más bajo:</b> Q%.2f (%s)</html>",
+	            citaMayor.getPrecio(), citaMayor.getCliente(),
+	            citaMenor.getPrecio(), citaMenor.getCliente()
+	        );
+	        
+	        lblResumenPrecios.setText(resumen);
+	    }
+	    
+	    private void actualizarResumenPrecios1(List<Cita> citas) {
+	        if (citas == null || citas.isEmpty()) {
+	            lblResumenPrecios.setText("Resumen de precios: No hay registros registrados.");
+	            return;
+	        }
+
+	        Cita citaMayor = citas.get(0);
+	        Cita citaMenor = citas.get(0);
+
+	        for (Cita c : citas) {
+	            if (c.getPrecio() > citaMayor.getPrecio()) {
+	                citaMayor = c;
+	            }
+	            if (c.getPrecio() < citaMenor.getPrecio()) {
+	                citaMenor = c;
+	            }
+	        }
+
+	        String resumen = String.format(
+	            "<html><b>Precio más alto:</b> Q%.2f (%s) | <b>Precio más bajo:</b> Q%.2f (%s)</html>",
+	            citaMayor.getPrecio(), citaMayor.getCliente(),
+	            citaMenor.getPrecio(), citaMenor.getCliente()
+	        );
+	        
+	        lblResumenPrecios.setText(resumen);
+	    }
+	    
 	}
