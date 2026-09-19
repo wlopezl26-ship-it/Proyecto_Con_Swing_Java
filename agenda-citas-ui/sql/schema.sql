@@ -18,3 +18,6 @@ Insert into cita (cliente, fecha_hora, servicio, duracion_minutos, estado) value
 ('Robert Mendez','2026-09-21 09:00:00','Cambio de aceite',60,'confirmada'),
 ('Ursula Juarez','2026-09-18 16:00:00','Consulta general',30,'cancelada');
 
+
+
+
