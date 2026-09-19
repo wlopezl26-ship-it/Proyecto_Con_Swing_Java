@@ -1,4 +1,4 @@
-Create Database if not exists USE agenda_citas_db;
+Create Database if not exists;
 
 Use agenda_citas_db;
 
@@ -17,3 +17,4 @@ Insert into cita (cliente, fecha_hora, servicio, duracion_minutos, estado) value
 ('Maria Fernanda Lopez','2026-09-20 14:30:00','Corte de cabello',45,'pendiente'),
 ('Robert Mendez','2026-09-21 09:00:00','Cambio de aceite',60,'confirmada'),
 ('Ursula Juarez','2026-09-18 16:00:00','Consulta general',30,'cancelada');
+
