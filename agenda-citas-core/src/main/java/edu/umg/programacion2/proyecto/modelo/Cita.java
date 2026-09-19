@@ -8,29 +8,31 @@ public class Cita {
     private String servicio;
     private int duracionMinutos;
     private String estado; 
+    private double precio;
 
     public Cita() {
     }
 
-    public Cita(int id, String cliente, LocalDateTime fechaHora, String servicio, int duracionMinutos, String estado) {
+    public Cita(int id, String cliente, LocalDateTime fechaHora, String servicio, int duracionMinutos, Double precio, String estado) {
         this.id = id;
         this.cliente = cliente;
         this.fechaHora = fechaHora;
         this.servicio = servicio;
         this.duracionMinutos = duracionMinutos;
         this.estado = estado;
+        this.precio = precio;
     }
 
-    // Constructor sin ID (para crear citas nuevas donde la BD asigna el ID)
-    public Cita(String cliente, LocalDateTime fechaHora, String servicio, int duracionMinutos, String estado) {
+   
+    public Cita(String cliente, LocalDateTime fechaHora, String servicio, int duracionMinutos, Double precio, String estado) {
         this.cliente = cliente;
         this.fechaHora = fechaHora;
         this.servicio = servicio;
         this.duracionMinutos = duracionMinutos;
         this.estado = estado;
+        this.precio = precio;
     }
 
-    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -78,8 +80,17 @@ public class Cita {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+    
 
-    @Override
+    public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	@Override
     public String toString() {
         return "Cita{" +
                 "id=" + id +
@@ -87,6 +98,7 @@ public class Cita {
                 ", fechaHora=" + fechaHora +
                 ", servicio='" + servicio + '\'' +
                 ", duracionMinutos=" + duracionMinutos +
+                ", precio='" + precio + '\''+
                 ", estado='" + estado + '\'' +
                 '}';
     }

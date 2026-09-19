@@ -12,10 +12,10 @@ public class CitaDAO {
 
 	 private static final String URL = "jdbc:mysql://localhost:3306/prog2_db?useSSL=false&serverTimezone=UTC";
 	    private static final String USUARIO = "root";
-	    private static final String PASSWORD = "";
+	    private static final String PASSWORD = "3424942522201We";
    
     public Cita crear(Cita cita) throws SQLException {
-        String sql = "INSERT INTO cita (cliente, fecha_hora, servicio, duracion_minutos, estado) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cita (cliente, fecha_hora, servicio, duracion_minutos, precio, estado ) VALUES (?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = ConexionBD.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -24,7 +24,8 @@ public class CitaDAO {
             stmt.setTimestamp(2, Timestamp.valueOf(cita.getFechaHora()));
             stmt.setString(3, cita.getServicio());
             stmt.setInt(4, cita.getDuracionMinutos());
-            stmt.setString(5, cita.getEstado());
+            stmt.setDouble(5, cita.getPrecio());
+            stmt.setString(6, cita.getEstado());
 
             stmt.executeUpdate();
 
@@ -40,7 +41,7 @@ public class CitaDAO {
   
     public List<Cita> listarTodos() throws SQLException {
         List<Cita> citas = new ArrayList<>();
-        String sql = "SELECT id, cliente, fecha_hora, servicio, duracion_minutos, estado FROM cita ORDER BY fecha_hora ASC";
+        String sql = "SELECT id, cliente, fecha_hora, servicio, duracion_minutos, precio, estado FROM cita ORDER BY fecha_hora ASC";
 
         try (Connection conn = ConexionBD.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -56,7 +57,7 @@ public class CitaDAO {
 
  
     public Optional<Cita> buscarPorId(int id) throws SQLException {
-        String sql = "SELECT id, cliente, fecha_hora, servicio, duracion_minutos, estado FROM cita WHERE id = ?";
+        String sql = "SELECT id, cliente, fecha_hora, servicio, duracion_minutos, precio, estado FROM cita WHERE id = ?";
 
         try (Connection conn = ConexionBD.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -74,7 +75,7 @@ public class CitaDAO {
 
   
     public boolean actualizar(Cita cita) throws SQLException {
-        String sql = "UPDATE cita SET cliente = ?, fecha_hora = ?, servicio = ?, duracion_minutos = ?, estado = ? WHERE id = ?";
+        String sql = "UPDATE cita SET cliente = ?, fecha_hora = ?, servicio = ?, duracion_minutos = ?, precio= ?, estado = ? WHERE id = ?";
 
         try (Connection conn = ConexionBD.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -83,8 +84,9 @@ public class CitaDAO {
             stmt.setTimestamp(2, Timestamp.valueOf(cita.getFechaHora()));
             stmt.setString(3, cita.getServicio());
             stmt.setInt(4, cita.getDuracionMinutos());
-            stmt.setString(5, cita.getEstado());
-            stmt.setInt(6, cita.getId());
+            stmt.setDouble(5, cita.getPrecio());
+            stmt.setString(6, cita.getEstado());
+            stmt.setInt(7, cita.getId());
 
             return stmt.executeUpdate() > 0;
         }
@@ -109,8 +111,9 @@ public class CitaDAO {
         LocalDateTime fechaHora = rs.getTimestamp("fecha_hora").toLocalDateTime();
         String servicio = rs.getString("servicio");
         int duracion = rs.getInt("duracion_minutos");
+        double precio = rs.getDouble("precio");
         String estado = rs.getString("estado");
 
-        return new Cita(id, cliente, fechaHora, servicio, duracion, estado);
+        return new Cita(id, cliente, fechaHora, servicio, duracion, precio, estado);
     }
 }

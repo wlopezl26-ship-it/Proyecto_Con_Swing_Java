@@ -24,6 +24,7 @@ public class VentanaPrincipal extends JFrame {
 	    private JTextField txtFechaHora;
 	    private JTextField txtServicio;
 	    private JTextField txtDuracion;
+	    private JTextField txtPrecio;
 	    private JComboBox<String> cmbEstado;
 
 	    private JButton btnGuardar;
@@ -45,6 +46,7 @@ public class VentanaPrincipal extends JFrame {
 	        setSize(850, 550);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null);
+	        txtPrecio = new JTextField(15);
 	        setLayout(new BorderLayout(10, 10));
 
 	  
@@ -68,6 +70,7 @@ public class VentanaPrincipal extends JFrame {
 	        agregarCampo(panelForm, gbc, "Fecha/Hora (yyyy-MM-dd HH:mm):", txtFechaHora, row++);
 	        agregarCampo(panelForm, gbc, "Servicio:", txtServicio, row++);
 	        agregarCampo(panelForm, gbc, "Duración (min):", txtDuracion, row++);
+	        agregarCampo(panelForm, gbc, "Precio (Q):", txtPrecio, row++);
 	        agregarCampo(panelForm, gbc, "Estado:", cmbEstado, row++);
 
 	        // --- BOTONES ---
@@ -90,7 +93,7 @@ public class VentanaPrincipal extends JFrame {
 	        add(panelForm, BorderLayout.WEST);
 
 	        // --- TABLA DE CITAS (Centro) ---
-	        String[] columnas = {"ID", "Cliente", "Fecha / Hora", "Servicio", "Duración", "Estado"};
+	        String[] columnas = {"ID", "Cliente", "Fecha / Hora", "Servicio", "Duración", "Precio", "Estado"};
 	        tableModel = new DefaultTableModel(columnas, 0) {
 	            @Override
 	            public boolean isCellEditable(int r, int c) { return false; }
@@ -136,6 +139,7 @@ public class VentanaPrincipal extends JFrame {
 	                        c.getFechaHora().format(formatter),
 	                        c.getServicio(),
 	                        c.getDuracionMinutos() + " min",
+	                        String.format("%.2f", c.getPrecio()),
 	                        c.getEstado()
 	                });
 	            }
@@ -151,6 +155,7 @@ public class VentanaPrincipal extends JFrame {
 	            String servicio = txtServicio.getText().trim();
 	            int duracion = Integer.parseInt(txtDuracion.getText().trim());
 	            String estado = (String) cmbEstado.getSelectedItem();
+	            double precio = Double.parseDouble(txtPrecio.getText().trim());
 
 	            if (cliente.isEmpty() || servicio.isEmpty()) {
 	                JOptionPane.showMessageDialog(this, "Por favor llena todos los campos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -158,7 +163,7 @@ public class VentanaPrincipal extends JFrame {
 	            }
 
 	            LocalDateTime fechaHora = LocalDateTime.parse(fechaStr, formatter);
-	            Cita nueva = new Cita(cliente, fechaHora, servicio, duracion, estado);
+	            Cita nueva = new Cita(cliente, fechaHora, servicio, duracion,precio, estado);
 
 	            citaDAO.crear(nueva);
 	            JOptionPane.showMessageDialog(this, "Cita registrada correctamente.");
@@ -185,9 +190,10 @@ public class VentanaPrincipal extends JFrame {
 	            LocalDateTime fechaHora = LocalDateTime.parse(txtFechaHora.getText().trim(), formatter);
 	            String servicio = txtServicio.getText().trim();
 	            int duracion = Integer.parseInt(txtDuracion.getText().trim().replace(" min", ""));
+	            double precio = Double.parseDouble(txtPrecio.getText().trim());
 	            String estado = (String) cmbEstado.getSelectedItem();
 
-	            Cita cita = new Cita(id, cliente, fechaHora, servicio, duracion, estado);
+	            Cita cita = new Cita(id, cliente, fechaHora, servicio, duracion, precio, estado);
 	            if (citaDAO.actualizar(cita)) {
 	                JOptionPane.showMessageDialog(this, "Cita actualizada correctamente.");
 	                limpiarFormulario();
@@ -227,7 +233,8 @@ public class VentanaPrincipal extends JFrame {
 	        txtFechaHora.setText(tableModel.getValueAt(fila, 2).toString());
 	        txtServicio.setText(tableModel.getValueAt(fila, 3).toString());
 	        txtDuracion.setText(tableModel.getValueAt(fila, 4).toString().replace(" min", ""));
-	        cmbEstado.setSelectedItem(tableModel.getValueAt(fila, 5).toString());
+	        txtPrecio.setText(tableModel.getValueAt(fila, 5).toString());
+	        cmbEstado.setSelectedItem(tableModel.getValueAt(fila, 6).toString());
 	    }
 
 	    private void limpiarFormulario() {
@@ -236,6 +243,7 @@ public class VentanaPrincipal extends JFrame {
 	        txtFechaHora.setText("");
 	        txtServicio.setText("");
 	        txtDuracion.setText("");
+	        txtPrecio.setText("");
 	        cmbEstado.setSelectedIndex(0);
 	        tablaCitas.clearSelection();
 	    }
